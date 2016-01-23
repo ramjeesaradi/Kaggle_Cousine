@@ -25,9 +25,13 @@ names(switches) <- ingredients
 
 switches[,"itmnum"]<- itmnum
 switches[,"cousine"]<- cousine
+switches[is.na]<-0
 
 stopCluster(cl)
 
 partit <- createDataPartition(y = switches$cousine,p = 0.8,list = FALSE,times = 1)
 
+switches.lr <- glm.fit(switches[partit,1:(length(switches)-2)],switches[partit,length(switches)],family = "binomial")
+
 switches.pca <- prcomp(switches[,0:6714]) 
+corout <- cor(switches[partit,1:(length(switches)-2)])
